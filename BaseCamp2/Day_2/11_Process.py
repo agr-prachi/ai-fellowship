@@ -1,4 +1,5 @@
 import multiprocessing
+import threading
 import time
 from datetime import datetime
 
@@ -15,7 +16,27 @@ def cpu_task (name : str, counter : int):
 
 # Execute with multi process
 if __name__ == "__main__":
-    
+    # Execute with multi thread
+
+    # Creating threads
+    T1 = threading.Thread (target=cpu_task, args=("T1", 50000000))
+    T2 = threading.Thread (target=cpu_task, args=("T2", 40000000))
+
+    # take time stamp
+    Before = datetime.now ()
+
+    # Tasks as Thread
+    T1.start ()
+    T2.start ()
+
+    # Wait for both to complete
+    T1.join ()
+    T2.join ()
+
+    After = datetime.now ()
+
+    print (After-Before)
+
     # Creating Process
     P1 = multiprocessing.Process (target=cpu_task, args=("P1", 50000000))
     P2 = multiprocessing.Process (target=cpu_task, args=("P2", 40000000))
@@ -33,4 +54,4 @@ if __name__ == "__main__":
 
     After = datetime.now ()
 
-    print (Before, After)
+    print (After-Before)
